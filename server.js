@@ -3,7 +3,7 @@ var 	express = require('express')
 	,	server = require('http').createServer(app)
 	,	fs = require('fs')
 	,	path = require('path')
-	,	repl = require('repl')
+	,	repl = require('repl');
 
 
 server.listen(3000);
