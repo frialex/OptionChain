@@ -11,13 +11,28 @@ function cbfunc(data){
 }
 
 function drawChainChart(data){
-   d3 .select('body').selectAll("div")
-      .data(data.option)
-      .enter()
-      .append("p")
-      .text(function(d){ return d.symbol })
-      .style('color', function(d){return colorOptionType(d)});
+   var svgBase =   d3 .select('body').append("svg").attr('width', 500).attr('height', 500);
 
+   var baseGraphic = svgBase.selectAll('circle').data(data.option).enter().append('circle')
+                              .attr({cx: 0, cy: 0, r: 0});
+
+   //TODO: Need bette placement than _.random... //TODO: .ease('circle')? bounce?
+   var extendedGraphic =   baseGraphic.transition().duration(700)
+                                      .attr('cx', function(d, i){ return (i*10 + _.random(20,50)); }) 
+                                      .attr('cy', function(d, i){ return placeOption(d); })
+                                      .attr('r',  function(d)   { return d.strikePrice/10; });
+
+   extendedGraphic.attr('fill', function(d){ return colorOptionType(d); })
+   //TODO: Add stroke and stroke width?? what would that mean? how would you read it back?
+
+}
+
+function placeOption(op){
+   if(op.type === 'C'){
+      return _.random(10,50);
+   }else if(op.type === 'P'){
+      return _.random(80,120);
+   }
 }
 
 function colorOptionType(option){
